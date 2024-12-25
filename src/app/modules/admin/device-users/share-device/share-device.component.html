@@ -1,0 +1,71 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 max-h-160 -m-6 overflow-y-auto">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">{{ data ? 'Edit' : 'New' }} Share Device</div>
+        <button mat-icon-button (click)="matDialogRef.close()" [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+        </button>
+    </div>
+
+    <!-- Card form -->
+    <div class="flex flex-col w-full p-6 sm:p-8 overflow-y-auto">
+
+        <!-- Alert -->
+        <fuse-alert
+            class="mb-4"
+            *ngIf="showAlert"
+            [appearance]="'outline'"
+            [showIcon]="false"
+            [type]="alert.type"
+            [@shake]="alert.type === 'error'">
+            {{ alert.message }}
+        </fuse-alert>
+
+        <!-- form -->
+        <form [formGroup]="createForm">
+
+            <!-- User field -->
+            <mat-form-field class="w-full mb-2">
+                <mat-label>Share to</mat-label>
+                <mat-select [formControlName]="'zitadelUserId'" (scroll)="onScroll()">
+                    @for (option of zitadelUsers; track option.id) {
+                        @if (option.id !== data.user.id) {
+                            <mat-option [value]="option.id">{{ option.name }}</mat-option>
+                        }
+                    }
+                    @if (isLoading) {
+                        <mat-option>
+                            <mat-spinner diameter="30"></mat-spinner>
+                            Loading...
+                        </mat-option>
+                    }
+                </mat-select>
+                <mat-spinner *ngIf="isLoading" class="ml-1" diameter="30"></mat-spinner>
+                <mat-error *ngIf="createForm.get('zitadelUserId').hasError('required')">
+                    User is required
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Submit button -->
+            <div class="flex justify-end">
+                <button
+                    class="fuse-mat-button-large mt-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [disabled]="createForm.disabled || isLoading"
+                    (click)="save()">
+                    <span *ngIf="!createForm.disabled && !isLoading">
+                        Save
+                    </span>
+                    <mat-progress-spinner
+                        *ngIf="createForm.disabled || isLoading"
+                        [diameter]="24"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
