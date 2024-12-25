@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+    angular:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        depends_on:
+            - traefik
+        networks:
+            web:
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.angular.entrypoints=http"
+            - "traefik.http.routers.angular.rule=Host(`manage.appsavi.com`)"
+            - "traefik.http.middlewares.angular-https-redirect.redirectscheme.scheme=https"
+            - "traefik.http.routers.angular.middlewares=angular-https-redirect"
+            - "traefik.http.routers.angular-secure.entrypoints=https"
+            - "traefik.http.routers.angular-secure.rule=Host(`manage.appsavi.com`)"
+            - "traefik.http.routers.angular-secure.tls=true"
+            - "traefik.http.routers.angular-secure.tls.certresolver=http"
+            - "traefik.http.routers.angular-secure.service=angular"
+            - "traefik.http.services.angular.loadbalancer.server.port=80"
+            - "traefik.docker.network=web"
+
+networks:
+    web:
+        external: true

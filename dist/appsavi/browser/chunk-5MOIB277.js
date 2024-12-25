@@ -1,0 +1,1 @@
+import{Y as n,sb as r}from"./chunk-VNRFEW3Q.js";var a=(()=>{let t=class t{constructor(){}};t.\u0275fac=function(o){return new(o||t)},t.\u0275cmp=n({type:t,selectors:[["error-404"]],standalone:!0,features:[r],decls:0,vars:0,template:function(o,c){},encapsulation:2,changeDetection:0});let e=t;return e})();var f=[{path:"",component:a}];export{f as default};

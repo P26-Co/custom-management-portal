@@ -1,0 +1,1 @@
+var S=(()=>{let i=class i{};i.ZITADEL_USERS="/zitadel-users",i.DEVICES="/devices",i.DEVICE_USERS="/device-users",i.SHARED_USERS="/shared-users",i.ADMIN_USERS="/admin-users";let E=i;return E})();export{S as a};
