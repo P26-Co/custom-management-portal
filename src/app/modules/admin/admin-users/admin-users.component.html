@@ -66,8 +66,10 @@
                             <button mat-icon-button matTooltip="edit" (click)="openAdminModal(element)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
                             </button>
-<!--                            @if (user.id !== element.id) {-->
-                            @if (false) {
+                            <button mat-icon-button matTooltip="view admin logs" (click)="viewAdminLogs(element.id)">
+                                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:manage_search'"></mat-icon>
+                            </button>
+                            @if (user.id !== element.id) {
                                 <button mat-icon-button matTooltip="delete" (click)="deleteConfirmation(element)">
                                     <mat-icon class="icon-size-5 text-red-500"
                                               [svgIcon]="'heroicons_outline:trash'"></mat-icon>

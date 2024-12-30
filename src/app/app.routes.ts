@@ -86,8 +86,16 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/shared-users/shared-users.routes'),
             },
             {
+                path: 'device-logs',
+                loadChildren: () => import('app/modules/admin/device-logs/device-logs.routes'),
+            },
+            {
                 path: 'admin-users',
                 loadChildren: () => import('app/modules/admin/admin-users/admin-users.routes'),
+            },
+            {
+                path: 'admin-logs',
+                loadChildren: () => import('app/modules/admin/admin-logs/admin-logs.routes'),
             },
 
             // 404 & Catch all

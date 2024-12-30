@@ -7,6 +7,8 @@ export interface Pagination {
     zitadel_user_id?: number;
     device_id?: number;
     device_user_id?: number;
+    shared_user_id?: number;
+    admin_user_id?: number;
 }
 
 export class PageableModel {

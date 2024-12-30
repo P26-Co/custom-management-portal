@@ -68,6 +68,12 @@
                             <button mat-icon-button matTooltip="view devices" (click)="viewDevice(element.id)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:computer-desktop'"></mat-icon>
                             </button>
+                            <button mat-icon-button matTooltip="view device logs" (click)="viewDeviceLogs(element.id)">
+                                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:screen_search_desktop'"></mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="view admin logs" (click)="viewAdminLogs(element.id)">
+                                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:manage_search'"></mat-icon>
+                            </button>
                             <button mat-icon-button matTooltip="delete" (click)="deleteConfirmation(element)">
                                 <mat-icon class="icon-size-5 text-red-500"
                                           [svgIcon]="'heroicons_outline:trash'"></mat-icon>

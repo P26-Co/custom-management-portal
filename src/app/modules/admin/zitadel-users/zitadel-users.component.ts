@@ -104,6 +104,22 @@ export class ZitadelUsersComponent implements OnInit, OnDestroy {
             .then();
     }
 
+    viewDeviceLogs(id: number): void {
+        this.router
+            .navigate([RoutesConstants.DEVICE_LOGS], {
+                queryParams: { zitadel_user_id: id },
+            })
+            .then();
+    }
+
+    viewAdminLogs(id: number): void {
+        this.router
+            .navigate([RoutesConstants.ADMIN_LOGS], {
+                queryParams: { zitadel_user_id: id },
+            })
+            .then();
+    }
+
     getZitadelUsers(): void {
         this.isLoading = true;
         this.queryParamHandler();

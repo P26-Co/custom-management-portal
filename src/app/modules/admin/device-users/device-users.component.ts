@@ -20,12 +20,12 @@ import {
 } from '../../../../@fuse/components/alert';
 import { FuseConfirmationService } from '../../../../@fuse/services/confirmation';
 import { PAGE_SIZES } from '../../shared/constants/others.constants';
+import { RoutesConstants } from '../../shared/constants/routes.constants';
 import { Pagination } from '../../shared/types/pagination.types';
 import { DevicesModel } from '../devices/devices.type';
 import { DeviceUsersService } from './device-users.service';
 import { DeviceUserModel, DeviceUsersModel } from './device-users.type';
 import { ShareDeviceComponent } from './share-device/share-device.component';
-import { RoutesConstants } from '../../shared/constants/routes.constants';
 
 @Component({
     selector: 'app-device-users',
@@ -83,7 +83,7 @@ export class DeviceUsersComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _deviceUsersService: DeviceUsersService,
         private _matDialog: MatDialog,
-        private router: Router,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -228,9 +228,27 @@ export class DeviceUsersComponent implements OnInit, OnDestroy {
     }
 
     viewSharedUser(id: number): void {
-        this.router.navigate([RoutesConstants.SHARED_USERS], {
-            queryParams: {device_user_id: id}
-        }).then();
+        this.router
+            .navigate([RoutesConstants.SHARED_USERS], {
+                queryParams: { device_user_id: id },
+            })
+            .then();
+    }
+
+    viewDeviceLogs(id: number): void {
+        this.router
+            .navigate([RoutesConstants.DEVICE_LOGS], {
+                queryParams: { device_user_id: id },
+            })
+            .then();
+    }
+
+    viewAdminLogs(id: number): void {
+        this.router
+            .navigate([RoutesConstants.ADMIN_LOGS], {
+                queryParams: { device_user_id: id },
+            })
+            .then();
     }
 
     onFailed(message: string): void {

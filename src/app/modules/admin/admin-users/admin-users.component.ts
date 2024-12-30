@@ -19,13 +19,14 @@ import {
     FuseAlertType,
 } from '../../../../@fuse/components/alert';
 import { FuseConfirmationService } from '../../../../@fuse/services/confirmation';
+import { UserService } from '../../../core/user/user.service';
 import { User } from '../../../core/user/user.types';
 import { PAGE_SIZES } from '../../shared/constants/others.constants';
+import { RoutesConstants } from '../../shared/constants/routes.constants';
 import { Pagination } from '../../shared/types/pagination.types';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminUsersService } from './admin-users.service';
 import { AdminUserModel, AdminUsersModel } from './admin-users.type';
-import { UserService } from '../../../core/user/user.service';
 
 @Component({
     selector: 'app-admin-users',
@@ -81,7 +82,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _userService: UserService,
         private _adminUsersService: AdminUsersService,
-        private _matDialog: MatDialog
+        private _matDialog: MatDialog,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -215,6 +217,14 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
                     ),
             })
         );
+    }
+
+    viewAdminLogs(id: number): void {
+        this.router
+            .navigate([RoutesConstants.ADMIN_LOGS], {
+                queryParams: { admin_user_id: id },
+            })
+            .then();
     }
 
     onFailed(message: string): void {

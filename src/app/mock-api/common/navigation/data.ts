@@ -38,6 +38,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: RoutesConstants.SHARED_USERS,
             },
             {
+                id: 'main.device_logs',
+                title: 'Device Logs',
+                type: 'basic',
+                icon: 'mat_outline:screen_search_desktop',
+                link: RoutesConstants.DEVICE_LOGS,
+            },
+            {
                 id: 'divider-1',
                 type: 'divider',
             },
@@ -47,6 +54,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type: 'basic',
                 icon: 'heroicons_outline:user-group',
                 link: RoutesConstants.ADMIN_USERS,
+            },
+            {
+                id: 'main.admin_logs',
+                title: 'Admin Logs',
+                type: 'basic',
+                icon: 'mat_outline:manage_search',
+                link: RoutesConstants.ADMIN_LOGS,
             },
         ],
     },

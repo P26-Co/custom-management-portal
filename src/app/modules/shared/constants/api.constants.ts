@@ -15,4 +15,7 @@ export class APIs {
     public static readonly SHARED_USER = APIs.API + 'shared-user';
 
     public static readonly ADMIN_USERS = APIs.API + 'admin-users';
+
+    public static readonly LOG_ACTIVITY = APIs.API + 'log-activity';
+    public static readonly ADMIN_LOG_ACTIVITY = APIs.API + 'admin-log-activity';
 }

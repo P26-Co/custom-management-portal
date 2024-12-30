@@ -224,6 +224,22 @@ export class DevicesComponent implements OnInit, OnDestroy {
             .then();
     }
 
+    viewDeviceLogs(id: number): void {
+        this.router
+            .navigate([RoutesConstants.DEVICE_LOGS], {
+                queryParams: { device_id: id },
+            })
+            .then();
+    }
+
+    viewAdminLogs(id: number): void {
+        this.router
+            .navigate([RoutesConstants.ADMIN_LOGS], {
+                queryParams: { device_id: id },
+            })
+            .then();
+    }
+
     onFailed(message: string): void {
         this.alert = {
             type: 'error',
