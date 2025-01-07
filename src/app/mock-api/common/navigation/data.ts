@@ -64,7 +64,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id: 'main.tenant_managers',
-                title: 'Tenant Mangers',
+                title: 'Tenant Managers',
                 type: 'basic',
                 icon: 'mat_outline:supervised_user_circle',
                 link: RoutesConstants.TENANT_MANAGERS,
