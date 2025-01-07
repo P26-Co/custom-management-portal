@@ -18,6 +18,6 @@ export class APIs {
     public static readonly PORTAL_LOGS = APIs.API + 'portal-logs/';
 
     public static readonly TASK_STATUS = APIs.API + 'task-status/';
-    public static readonly ZITADEL_IMPORT_USERS = APIs.TASK_STATUS + 'zitadel-import-users/';
+    public static readonly ZITADEL_IMPORT_USERS = APIs.TASK_STATUS + 'zitadel-import-users';
 
 }
