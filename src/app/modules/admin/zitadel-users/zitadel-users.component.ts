@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,9 +19,13 @@ import {
     FuseAlertType,
 } from '../../../../@fuse/components/alert';
 import { FuseConfirmationService } from '../../../../@fuse/services/confirmation';
+import { UserService } from '../../../core/user/user.service';
+import { ROLE, User } from '../../../core/user/user.types';
 import { PAGE_SIZES } from '../../shared/constants/others.constants';
 import { RoutesConstants } from '../../shared/constants/routes.constants';
 import { Pagination } from '../../shared/types/pagination.types';
+import { TaskStatusService } from '../task-status/task-status.service';
+import { TASK_STATUS, TaskModel } from '../task-status/task-status.type';
 import { ZitadelUsersService } from './zitadel-users.service';
 import { ZitadelUserModel, ZitadelUsersModel } from './zitadel-users.type';
 
@@ -58,6 +63,8 @@ export class ZitadelUsersComponent implements OnInit, OnDestroy {
 
     pageSize: number[] = PAGE_SIZES;
     zitadelUsers: ZitadelUserModel[];
+    user: User;
+    userRole = ROLE;
 
     pagination: Pagination = {
         length: 0,
@@ -74,16 +81,23 @@ export class ZitadelUsersComponent implements OnInit, OnDestroy {
     };
     showAlert: boolean = false;
     isLoading: boolean = false;
+    isImportLoading: boolean = false;
+    private intervalId: any;
 
     constructor(
+        private _snackBar: MatSnackBar,
         private _activatedRoute: ActivatedRoute,
         private _fuseConfirmationService: FuseConfirmationService,
         private _router: Router,
         private _zitadelUsersService: ZitadelUsersService,
-        private router: Router
+        private _taskStatusService: TaskStatusService,
+        private router: Router,
+        private _userService: UserService
     ) {}
 
     ngOnInit(): void {
+        this.pagination.tenant_id =
+            this._activatedRoute.snapshot.queryParamMap.get('tenant_id');
         this.pagination.page = Number(
             this._activatedRoute.snapshot.queryParamMap.get('page') ?? 0
         );
@@ -93,31 +107,13 @@ export class ZitadelUsersComponent implements OnInit, OnDestroy {
         );
 
         this.isLoading = true;
+        this._subscription.add(
+            this._userService.user$.subscribe((user: User): void => {
+                this.user = user;
+            })
+        );
+
         this.getZitadelUsers();
-    }
-
-    viewDevice(id: number): void {
-        this.router
-            .navigate([RoutesConstants.DEVICES], {
-                queryParams: { zitadel_user_id: id },
-            })
-            .then();
-    }
-
-    viewDeviceLogs(id: number): void {
-        this.router
-            .navigate([RoutesConstants.DEVICE_LOGS], {
-                queryParams: { zitadel_user_id: id },
-            })
-            .then();
-    }
-
-    viewAdminLogs(id: number): void {
-        this.router
-            .navigate([RoutesConstants.ADMIN_LOGS], {
-                queryParams: { zitadel_user_id: id },
-            })
-            .then();
     }
 
     getZitadelUsers(): void {
@@ -147,11 +143,19 @@ export class ZitadelUsersComponent implements OnInit, OnDestroy {
         );
     }
 
+    clearSearch(): void {
+        this.pagination.page = 0;
+        this.pagination.length = 0;
+        this.pagination.tenant_id = undefined;
+        this.getZitadelUsers();
+    }
+
     queryParamHandler(): void {
         this._router
             .navigate(['.'], {
                 relativeTo: this._activatedRoute,
                 queryParams: {
+                    tenant_id: this.pagination.tenant_id,
                     page: this.pagination.page,
                     size: this.pagination.size,
                 },
@@ -217,6 +221,100 @@ export class ZitadelUsersComponent implements OnInit, OnDestroy {
         );
     }
 
+    importZitadelUser(): void {
+        this.isImportLoading = true;
+        this._subscription.add(
+            this._taskStatusService.importZitadelUser().subscribe({
+                next: (res: TaskModel): void => {
+                    this._snackBar.open('Zitadel User Import task started!');
+                    this.alert = {
+                        type: 'info',
+                        message: res.message,
+                    };
+                    this.showAlert = !!res.message;
+
+                    this.intervalId = setInterval(() => {
+                        this.checkTaskStatus(res);
+                    }, 5000); // 5 seconds
+                },
+                error: (err: HttpErrorResponse) => {
+                    if (err.status === 404) {
+                    }
+                    this.isImportLoading = false;
+                },
+            })
+        );
+    }
+
+    checkTaskStatus(data: TaskModel): void {
+        this._subscription.add(
+            this._taskStatusService.getTaskStatus(data.id).subscribe({
+                next: (res: TaskModel): void => {
+                    this.alert = {
+                        type: 'info',
+                        message: res.message,
+                    };
+                    this.showAlert = !!res.message;
+
+                    if (
+                        res.status !== TASK_STATUS.IN_PROGRESS &&
+                        res.status !== TASK_STATUS.PENDING
+                    ) {
+                        clearInterval(this.intervalId);
+                        this.getZitadelUsers();
+                        this.isImportLoading = false;
+                    }
+                },
+            })
+        );
+    }
+
+    viewDevice(id: string): void {
+        this.router
+            .navigate([RoutesConstants.DEVICES], {
+                queryParams: { zitadel_user_id: id },
+            })
+            .then();
+    }
+
+    viewDeviceUser(id: string): void {
+        this.router
+            .navigate([RoutesConstants.DEVICE_USERS], {
+                queryParams: { zitadel_user_id: id },
+            })
+            .then();
+    }
+
+    viewSharedUser(id: string): void {
+        this.router
+            .navigate([RoutesConstants.SHARED_USERS], {
+                queryParams: { zitadel_user_id: id },
+            })
+            .then();
+    }
+
+    viewDeviceLogs(id: string): void {
+        this.router
+            .navigate([RoutesConstants.DEVICE_LOGS], {
+                queryParams: { zitadel_user_id: id },
+            })
+            .then();
+    }
+
+    viewAdminLogs(id: string): void {
+        this.router
+            .navigate([RoutesConstants.PORTAL_LOGS], {
+                queryParams: { zitadel_user_id: id },
+            })
+            .then();
+    }
+
+    viewTaskStatus(): void {
+        this.router
+            .navigate([RoutesConstants.TASK_STATUS])
+            .then();
+    }
+
     onFailed(message: string): void {
         this.alert = {
             type: 'error',
@@ -228,5 +326,8 @@ export class ZitadelUsersComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this._subscription?.unsubscribe();
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
     }
 }

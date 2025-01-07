@@ -19,7 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
@@ -33,7 +33,6 @@ import { RoutesConstants } from '../../shared/constants/routes.constants';
     animations: fuseAnimations,
     standalone: true,
     imports: [
-        RouterLink,
         FuseAlertComponent,
         FormsModule,
         ReactiveFormsModule,
@@ -103,7 +102,7 @@ export class AuthSignInComponent implements OnInit, OnDestroy {
         // Sign in
         this.subscription.add(
             this._authService.signIn(this.signInForm.value).subscribe({
-                next: () => {
+                next: (): void => {
                     const redirectURL =
                         this._activatedRoute.snapshot.queryParamMap.get(
                             'redirectURL'
@@ -117,7 +116,7 @@ export class AuthSignInComponent implements OnInit, OnDestroy {
                     this.signInForm.enable();
 
                     // Reset the form
-                    this.signInNgForm.resetForm();
+                    // this.signInNgForm.resetForm();
 
                     // Set the alert
                     this.alert = {

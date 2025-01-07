@@ -1,9 +1,9 @@
 import {Routes} from '@angular/router';
-import {AdminLogsComponent} from "./admin-logs.component";
+import {PortalLogsComponent} from "./portal-logs.component";
 
 export default [
     {
         path: '',
-        component: AdminLogsComponent,
+        component: PortalLogsComponent,
     },
 ] as Routes;

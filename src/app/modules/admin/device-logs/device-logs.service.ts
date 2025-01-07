@@ -13,7 +13,7 @@ export class DeviceLogsService {
     constructor(private _httpClient: HttpClient) {}
 
     getDeviceLogs(pagination: Pagination): Observable<DeviceLogsModel> {
-        return this._httpClient.get<DeviceLogsModel>(APIs.LOG_ACTIVITY, {
+        return this._httpClient.get<DeviceLogsModel>(APIs.DEVICE_LOGS, {
             params: createHttpParams(pagination),
         });
     }

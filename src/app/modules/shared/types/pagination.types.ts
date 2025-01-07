@@ -4,11 +4,12 @@ export interface Pagination {
     page: number;
     search?: string;
     tenant_id?: string;
-    zitadel_user_id?: number;
-    device_id?: number;
-    device_user_id?: number;
-    shared_user_id?: number;
-    admin_user_id?: number;
+    zitadel_user_id?: string;
+    device_id?: string;
+    device_user_id?: string;
+    shared_user_id?: string;
+    portal_user_id?: string;
+    role?: string;
 }
 
 export class PageableModel {

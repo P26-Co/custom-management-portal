@@ -18,7 +18,8 @@ export class ZitadelUsersService {
         });
     }
 
-    deleteZitadelUser(id: number): Observable<any> {
-        return this._httpClient.delete<any>(`${APIs.ZITADEL_USERS}/${id}`);
+    deleteZitadelUser(id: string): Observable<any> {
+        return this._httpClient.delete<any>(`${APIs.ZITADEL_USERS}${id}`);
     }
+
 }

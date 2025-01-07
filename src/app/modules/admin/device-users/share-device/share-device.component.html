@@ -31,7 +31,9 @@
                 <mat-select [formControlName]="'zitadelUserId'" (scroll)="onScroll()">
                     @for (option of zitadelUsers; track option.id) {
                         @if (option.id !== data.user.id) {
-                            <mat-option [value]="option.id">{{ option.name }}</mat-option>
+                            <mat-option [value]="option.id">
+                                {{ option.name }} ({{ option.email }})
+                            </mat-option>
                         }
                     }
                     @if (isLoading) {

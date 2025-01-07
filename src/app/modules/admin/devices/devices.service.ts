@@ -18,14 +18,14 @@ export class DevicesService {
         });
     }
 
-    updateDevice(id: number, data: DevicesModel): Observable<DevicesModel> {
+    updateDevice(id: string, data: DevicesModel): Observable<DevicesModel> {
         return this._httpClient.patch<DevicesModel>(
-            `${APIs.DEVICES}/${id}`,
+            `${APIs.DEVICES}${id}`,
             data
         );
     }
 
-    deleteDevice(id: number): Observable<any> {
-        return this._httpClient.delete<any>(`${APIs.DEVICES}/${id}`);
+    deleteDevice(id: string): Observable<any> {
+        return this._httpClient.delete<any>(`${APIs.DEVICES}${id}`);
     }
 }

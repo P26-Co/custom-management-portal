@@ -8,7 +8,7 @@ export class DeviceLogsModel extends PageableModel {
 }
 
 export class DeviceLogModel {
-    id?: number;
+    id?: string;
     timestamp: string;
     activity_type: string;
     login_as?: string;

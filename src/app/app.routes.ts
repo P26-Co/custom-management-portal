@@ -70,6 +70,10 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
+                path: 'zitadel-tenants',
+                loadChildren: () => import('app/modules/admin/zitadel-tenants/zitadel-tenants.routes'),
+            },
+            {
                 path: 'zitadel-users',
                 loadChildren: () => import('app/modules/admin/zitadel-users/zitadel-users.routes'),
             },
@@ -94,8 +98,16 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/admin-users/admin-users.routes'),
             },
             {
-                path: 'admin-logs',
-                loadChildren: () => import('app/modules/admin/admin-logs/admin-logs.routes'),
+                path: 'tenant-managers',
+                loadChildren: () => import('app/modules/admin/tenant-managers/tenant-managers.routes'),
+            },
+            {
+                path: 'task-status',
+                loadChildren: () => import('app/modules/admin/task-status/task-status.routes'),
+            },
+            {
+                path: 'portal-logs',
+                loadChildren: () => import('app/modules/admin/portal-logs/portal-logs.routes'),
             },
 
             // 404 & Catch all

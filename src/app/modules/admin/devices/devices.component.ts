@@ -50,7 +50,7 @@ import { DeviceModel, DevicesModel } from './devices.type';
 })
 export class DevicesComponent implements OnInit, OnDestroy {
     private _subscription: Subscription = new Subscription();
-    displayedColumns: string[] = ['name', 'device_id', 'user_count', 'action'];
+    displayedColumns: string[] = ['name', 'device_id', 'len_device_users', 'action'];
 
     pageSize: number[] = PAGE_SIZES;
     devices: DeviceModel[];
@@ -81,11 +81,10 @@ export class DevicesComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.pagination.zitadel_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get(
-                'zitadel_user_id'
-            ) ?? 0
-        );
+        this.pagination.tenant_id =
+            this._activatedRoute.snapshot.queryParamMap.get('tenant_id');
+        this.pagination.zitadel_user_id =
+            this._activatedRoute.snapshot.queryParamMap.get('zitadel_user_id');
         this.pagination.page = Number(
             this._activatedRoute.snapshot.queryParamMap.get('page') ?? 0
         );
@@ -141,6 +140,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     clearSearch(): void {
         this.pagination.page = 0;
         this.pagination.length = 0;
+        this.pagination.tenant_id = undefined;
         this.pagination.zitadel_user_id = undefined;
         this.getDevices();
     }
@@ -150,6 +150,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
             .navigate(['.'], {
                 relativeTo: this._activatedRoute,
                 queryParams: {
+                    tenant_id: this.pagination.tenant_id,
                     zitadel_user_id: this.pagination.zitadel_user_id,
                     page: this.pagination.page,
                     size: this.pagination.size,
@@ -216,7 +217,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
         );
     }
 
-    viewDeviceUser(id: number): void {
+    viewDeviceUser(id: string): void {
         this.router
             .navigate([RoutesConstants.DEVICE_USERS], {
                 queryParams: { device_id: id },
@@ -224,7 +225,15 @@ export class DevicesComponent implements OnInit, OnDestroy {
             .then();
     }
 
-    viewDeviceLogs(id: number): void {
+    viewSharedUser(id: string): void {
+        this.router
+            .navigate([RoutesConstants.SHARED_USERS], {
+                queryParams: { device_id: id },
+            })
+            .then();
+    }
+
+    viewDeviceLogs(id: string): void {
         this.router
             .navigate([RoutesConstants.DEVICE_LOGS], {
                 queryParams: { device_id: id },
@@ -232,9 +241,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
             .then();
     }
 
-    viewAdminLogs(id: number): void {
+    viewAdminLogs(id: string): void {
         this.router
-            .navigate([RoutesConstants.ADMIN_LOGS], {
+            .navigate([RoutesConstants.PORTAL_LOGS], {
                 queryParams: { device_id: id },
             })
             .then();

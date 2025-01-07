@@ -5,15 +5,15 @@ import { ZitadelUserModel } from '../zitadel-users/zitadel-users.type';
 import { AdminUserModel } from '../admin-users/admin-users.type';
 import { SharedUserModel } from '../shared-users/shared-users.type';
 
-export class AdminLogsModel extends PageableModel {
-    items?: AdminLogModel[];
+export class PortalLogsModel extends PageableModel {
+    items?: PortalLogModel[];
 }
 
-export class AdminLogModel {
-    id?: number;
+export class PortalLogModel {
+    id?: string;
     timestamp: string;
     endpoint: string;
-    admin_user: AdminUserModel;
+    portal_user: AdminUserModel;
     action?: string;
     device_username?: DeviceUserModel;
     device?: DeviceModel;

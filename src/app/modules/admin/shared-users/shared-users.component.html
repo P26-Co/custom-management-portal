@@ -15,7 +15,7 @@
                 <!-- Actions -->
                 <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
                     <!-- Clear Filter -->
-                    @if (pagination.zitadel_user_id || pagination.device_user_id) {
+                    @if (pagination.zitadel_user_id || pagination.device_user_id || pagination.tenant_id) {
                         <button [color]="'primary'" mat-stroked-button (click)="clearSearch()">
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
                             <span>Clear Filter</span>
@@ -87,7 +87,12 @@
                                     (click)="viewDeviceUser(element.device_user.id)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:devices'"></mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="view admin logs" (click)="viewAdminLogs(element.id)">
+                            <button mat-icon-button matTooltip="view device logs"
+                                    (click)="viewDeviceLogs(element?.user?.id, element?.device_user?.id)">
+                                <mat-icon class="icon-size-5"
+                                          [svgIcon]="'mat_outline:screen_search_desktop'"></mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="view portal logs" (click)="viewAdminLogs(element.id)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:manage_search'"></mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="remove" (click)="deleteConfirmation(element)">

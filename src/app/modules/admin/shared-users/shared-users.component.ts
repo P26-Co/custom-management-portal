@@ -86,15 +86,12 @@ export class SharedUsersComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.pagination.zitadel_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get(
-                'zitadel_user_id'
-            ) ?? 0
-        );
-        this.pagination.device_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get('device_user_id') ??
-                0
-        );
+        this.pagination.tenant_id =
+            this._activatedRoute.snapshot.queryParamMap.get('tenant_id');
+        this.pagination.zitadel_user_id =
+            this._activatedRoute.snapshot.queryParamMap.get('zitadel_user_id');
+        this.pagination.device_user_id =
+            this._activatedRoute.snapshot.queryParamMap.get('device_user_id');
         this.pagination.page = Number(
             this._activatedRoute.snapshot.queryParamMap.get('page') ?? 0
         );
@@ -135,6 +132,7 @@ export class SharedUsersComponent implements OnInit, OnDestroy {
     clearSearch(): void {
         this.pagination.page = 0;
         this.pagination.length = 0;
+        this.pagination.tenant_id = undefined;
         this.pagination.zitadel_user_id = undefined;
         this.pagination.device_user_id = undefined;
         this.getSharedUsers();
@@ -145,6 +143,7 @@ export class SharedUsersComponent implements OnInit, OnDestroy {
             .navigate(['.'], {
                 relativeTo: this._activatedRoute,
                 queryParams: {
+                    tenant_id: this.pagination.tenant_id,
                     zitadel_user_id: this.pagination.zitadel_user_id,
                     device_user_id: this.pagination.device_user_id,
                     page: this.pagination.page,
@@ -215,7 +214,7 @@ export class SharedUsersComponent implements OnInit, OnDestroy {
         );
     }
 
-    viewDeviceUser(id: number): void {
+    viewDeviceUser(id: string): void {
         this.router
             .navigate([RoutesConstants.DEVICE_USERS], {
                 queryParams: { device_id: id },
@@ -223,10 +222,18 @@ export class SharedUsersComponent implements OnInit, OnDestroy {
             .then();
     }
 
-    viewAdminLogs(id: number): void {
+    viewAdminLogs(id: string): void {
         this.router
-            .navigate([RoutesConstants.ADMIN_LOGS], {
+            .navigate([RoutesConstants.PORTAL_LOGS], {
                 queryParams: { shared_user_id: id },
+            })
+            .then();
+    }
+
+    viewDeviceLogs(zitadel_user_id: string, device_user_id: string): void {
+        this.router
+            .navigate([RoutesConstants.DEVICE_LOGS], {
+                queryParams: { zitadel_user_id, device_user_id },
             })
             .then();
     }

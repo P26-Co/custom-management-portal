@@ -18,7 +18,7 @@ export class DeviceUsersService {
         });
     }
 
-    deleteDeviceUser(id: number): Observable<any> {
-        return this._httpClient.delete<any>(`${APIs.DEVICE_USERS}/${id}`);
+    deleteDeviceUser(id: string): Observable<any> {
+        return this._httpClient.delete<any>(`${APIs.DEVICE_USERS}${id}`);
     }
 }

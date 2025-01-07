@@ -19,13 +19,13 @@ import {
 } from '../../../../@fuse/components/alert';
 import { PAGE_SIZES } from '../../shared/constants/others.constants';
 import { Pagination } from '../../shared/types/pagination.types';
-import { AdminLogsService } from './admin-logs.service';
-import { AdminLogModel, AdminLogsModel } from './admin-logs.type';
+import { TaskStatusService } from './task-status.service';
+import { TaskModel, TaskStatusModel } from './task-status.type';
 
 @Component({
-    selector: 'app-admin-logs',
-    templateUrl: './admin-logs.component.html',
-    styleUrls: ['./admin-logs.component.scss'],
+    selector: 'app-task-status',
+    templateUrl: './task-status.component.html',
+    styleUrls: ['./task-status.component.scss'],
     standalone: true,
     animations: fuseAnimations,
     imports: [
@@ -45,21 +45,18 @@ import { AdminLogModel, AdminLogsModel } from './admin-logs.type';
         DatePipe,
     ],
 })
-export class AdminLogsComponent implements OnInit, OnDestroy {
+export class TaskStatusComponent implements OnInit, OnDestroy {
     private _subscription: Subscription = new Subscription();
     displayedColumns: string[] = [
-        'admin_user',
-        'endpoint',
-        'action',
-        'device',
-        'device_user',
-        'user',
-        'shared_user',
-        'timestamp',
+        'id',
+        'status',
+        'task_type',
+        'message',
+        'created_at',
     ];
 
     pageSize: number[] = PAGE_SIZES;
-    adminLogs: AdminLogModel[];
+    taskStatuses: TaskModel[];
 
     pagination: Pagination = {
         length: 0,
@@ -80,31 +77,10 @@ export class AdminLogsComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
-        private _sharedUsersService: AdminLogsService
+        private _taskStatusService: TaskStatusService
     ) {}
 
     ngOnInit(): void {
-        this.pagination.zitadel_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get(
-                'zitadel_user_id'
-            ) ?? 0
-        );
-        this.pagination.device_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get('device_id') ?? 0
-        );
-        this.pagination.device_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get('device_user_id') ??
-                0
-        );
-        this.pagination.shared_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get('shared_user_id') ??
-                0
-        );
-        this.pagination.admin_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get('admin_user_id') ??
-                0
-        );
-
         this.pagination.page = Number(
             this._activatedRoute.snapshot.queryParamMap.get('page') ?? 0
         );
@@ -114,17 +90,17 @@ export class AdminLogsComponent implements OnInit, OnDestroy {
         );
 
         this.isLoading = true;
-        this.getAdminLogs();
+        this.getTaskStatuses();
     }
 
-    getAdminLogs(): void {
+    getTaskStatuses(): void {
         this.isLoading = true;
         this.queryParamHandler();
 
         this._subscription.add(
-            this._sharedUsersService.getAdminLogs(this.pagination).subscribe({
-                next: (res: AdminLogsModel): void => {
-                    this.adminLogs = res.items;
+            this._taskStatusService.getTaskStatuses(this.pagination).subscribe({
+                next: (res: TaskStatusModel): void => {
+                    this.taskStatuses = res.items;
                     this.pagination.length = res.total;
                     this.isLoading = false;
                 },
@@ -142,27 +118,11 @@ export class AdminLogsComponent implements OnInit, OnDestroy {
         );
     }
 
-    clearSearch(): void {
-        this.pagination.page = 0;
-        this.pagination.length = 0;
-        this.pagination.zitadel_user_id = undefined;
-        this.pagination.device_user_id = undefined;
-        this.pagination.device_id = undefined;
-        this.pagination.shared_user_id = undefined;
-        this.pagination.admin_user_id = undefined;
-        this.getAdminLogs();
-    }
-
     queryParamHandler(): void {
         this._router
             .navigate(['.'], {
                 relativeTo: this._activatedRoute,
                 queryParams: {
-                    zitadel_user_id: this.pagination.zitadel_user_id,
-                    device_id: this.pagination.device_id,
-                    device_user_id: this.pagination.device_user_id,
-                    shared_user_id: this.pagination.shared_user_id,
-                    admin_user_id: this.pagination.admin_user_id,
                     page: this.pagination.page,
                     size: this.pagination.size,
                 },
@@ -174,7 +134,7 @@ export class AdminLogsComponent implements OnInit, OnDestroy {
         this.pagination.length = e.length;
         this.pagination.size = e.pageSize;
         this.pagination.page = e.pageIndex;
-        this.getAdminLogs();
+        this.getTaskStatuses();
     }
 
     onFailed(message: string): void {

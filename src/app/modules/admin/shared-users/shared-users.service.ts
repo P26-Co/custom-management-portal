@@ -19,11 +19,11 @@ export class SharedUsersService {
     }
 
     addShareUser(data: SharedUserReq): Observable<SharedUserModel> {
-        return this._httpClient.post<SharedUserModel>(APIs.SHARED_USER, data);
+        return this._httpClient.post<SharedUserModel>(APIs.SHARED_USERS, data);
     }
 
-    deleteShareUser(id: number): Observable<SharedUserModel> {
-        return this._httpClient.delete<SharedUserModel>(`${APIs.SHARED_USER}/${id}`);
+    deleteShareUser(id: string): Observable<SharedUserModel> {
+        return this._httpClient.delete<SharedUserModel>(`${APIs.SHARED_USERS}${id}`);
     }
 
 }

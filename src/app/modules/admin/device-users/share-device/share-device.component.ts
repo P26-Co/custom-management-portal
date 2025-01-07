@@ -82,6 +82,7 @@ export class ShareDeviceComponent implements OnInit, OnDestroy {
             deviceId: [this.data?.device?.id ?? '', [Validators.required]],
             zitadelUserId: ['', [Validators.required]],
         });
+        this.pagination.tenant_id = this.data.user.tenant_id;
         this.getZitadelUsers();
     }
 

@@ -1,0 +1,104 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 max-h-160 -m-6 overflow-y-auto">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">{{ data ? 'Edit' : 'New' }} Tenant Manager</div>
+        <button mat-icon-button (click)="matDialogRef.close()" [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+        </button>
+    </div>
+
+    <!-- Card form -->
+    <div class="flex flex-col w-full p-6 sm:p-8 overflow-y-auto">
+
+        <!-- Alert -->
+        <fuse-alert
+            class="mb-4"
+            *ngIf="showAlert"
+            [appearance]="'outline'"
+            [showIcon]="false"
+            [type]="alert.type"
+            [@shake]="alert.type === 'error'">
+            {{ alert.message }}
+        </fuse-alert>
+
+        <!-- form -->
+        <form [formGroup]="createForm">
+
+            <!-- Name field -->
+            <mat-form-field class="w-full mb-2">
+                <mat-label>Name</mat-label>
+                <input id="name" matInput [formControlName]="'name'" placeholder="Enter Name">
+                <mat-error *ngIf="createForm.get('name').hasError('required')">
+                    Name is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-full ">
+                <mat-label>Email</mat-label>
+                <input id="address_1" matInput [formControlName]="'email'" placeholder="Enter email">
+                <mat-error *ngIf="createForm.get('email').hasError('required')">
+                    Email is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-full ">
+                <mat-label>Password</mat-label>
+                <input id="password" type="password" matInput [formControlName]="'password'"
+                       placeholder="Enter password">
+            </mat-form-field>
+
+            <!-- Tenant field -->
+            <mat-form-field class="w-full mb-2">
+                <mat-label>Tenant</mat-label>
+                <mat-select [formControlName]="'tenant_id'" (scroll)="onScroll()">
+                    @for (option of zitadelTenants; track option.id) {
+                        <mat-option [value]="option.id">
+                            {{ option.name }} ({{ option.zitadel_tenant_id }})
+                        </mat-option>
+                    }
+                    @if (isLoading) {
+                        <mat-option>
+                            <mat-spinner diameter="30"></mat-spinner>
+                            Loading...
+                        </mat-option>
+                    }
+                </mat-select>
+                <mat-spinner *ngIf="isLoading" class="ml-1" diameter="30"></mat-spinner>
+                <mat-error *ngIf="createForm.get('tenant_id').hasError('required')">
+                    User is required
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Tenant field -->
+            <div class="w-full flex flex-col mb-2">
+                <mat-label class="mb-2">Status</mat-label>
+                <mat-slide-toggle
+                    [formControlName]="'active'"
+                    [color]="'primary'">
+                    {{ createForm.get('active').value === true ? 'Active' : 'Disabled' }}
+                </mat-slide-toggle>
+            </div>
+
+            <!-- Submit button -->
+            <div class="flex justify-end">
+                <button
+                    class="fuse-mat-button-large mt-3"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [disabled]="createForm.disabled || isLoading"
+                    (click)="save()">
+                    <span *ngIf="!createForm.disabled && !isLoading">
+                        Save
+                    </span>
+                    <mat-progress-spinner
+                        *ngIf="createForm.disabled || isLoading"
+                        [diameter]="24"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>

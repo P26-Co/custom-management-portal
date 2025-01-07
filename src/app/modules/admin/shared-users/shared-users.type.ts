@@ -8,16 +8,16 @@ export class SharedUsersModel extends PageableModel {
 }
 
 export class SharedUserModel {
-    id?: number;
-    shared_with_user_id?: number;
-    device_user_id?: number;
+    id?: string;
+    shared_with_user_id?: string;
+    device_user_id?: string;
     device_user?: DeviceUserModel;
     device?: DeviceModel;
     user?: ZitadelUserModel;
 }
 
 export class SharedUserReq {
-    deviceId: number;
-    deviceUserId: number;
-    zitadelUserId: number;
+    deviceId: string;
+    deviceUserId: string;
+    zitadelUserId: string;
 }

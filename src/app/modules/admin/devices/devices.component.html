@@ -15,7 +15,7 @@
                 <!-- Actions -->
                 <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
                     <!-- Clear Filter -->
-                    @if (pagination.zitadel_user_id) {
+                    @if (pagination.tenant_id || pagination.zitadel_user_id) {
                         <button [color]="'primary'" mat-stroked-button (click)="clearSearch()">
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
                             <span>Clear Filter</span>
@@ -59,10 +59,10 @@
                         <td mat-cell *matCellDef="let element">{{ element.device_id || '-' }}</td>
                     </ng-container>
 
-                    <!-- user_count Column -->
-                    <ng-container matColumnDef="user_count">
+                    <!-- len_device_users Column -->
+                    <ng-container matColumnDef="len_device_users">
                         <th mat-header-cell *matHeaderCellDef> Device Users</th>
-                        <td mat-cell *matCellDef="let element">{{ element.device_users?.length || '-' }}</td>
+                        <td mat-cell *matCellDef="let element">{{ element.len_device_users || '-' }}</td>
                     </ng-container>
 
                     <!-- Action Column -->
@@ -72,10 +72,13 @@
                             <button mat-icon-button matTooltip="view device users" (click)="viewDeviceUser(element.id)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:devices'"></mat-icon>
                             </button>
+                            <button mat-icon-button matTooltip="view shared users" (click)="viewSharedUser(element.id)">
+                                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:screen_share'"></mat-icon>
+                            </button>
                             <button mat-icon-button matTooltip="view device logs" (click)="viewDeviceLogs(element.id)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:screen_search_desktop'"></mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="view admin logs" (click)="viewAdminLogs(element.id)">
+                            <button mat-icon-button matTooltip="view portal logs" (click)="viewAdminLogs(element.id)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:manage_search'"></mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="edit" (click)="openDeviceModal(element)">

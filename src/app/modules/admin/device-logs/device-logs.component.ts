@@ -82,18 +82,14 @@ export class DeviceLogsComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.pagination.zitadel_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get(
-                'zitadel_user_id'
-            ) ?? 0
-        );
-        this.pagination.device_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get('device_id') ?? 0
-        );
-        this.pagination.device_user_id = Number(
-            this._activatedRoute.snapshot.queryParamMap.get('device_user_id') ??
-                0
-        );
+        this.pagination.tenant_id =
+            this._activatedRoute.snapshot.queryParamMap.get('tenant_id');
+        this.pagination.zitadel_user_id =
+            this._activatedRoute.snapshot.queryParamMap.get('zitadel_user_id');
+        this.pagination.device_id =
+            this._activatedRoute.snapshot.queryParamMap.get('device_id');
+        this.pagination.device_user_id =
+            this._activatedRoute.snapshot.queryParamMap.get('device_user_id');
         this.pagination.page = Number(
             this._activatedRoute.snapshot.queryParamMap.get('page') ?? 0
         );
@@ -134,6 +130,7 @@ export class DeviceLogsComponent implements OnInit, OnDestroy {
     clearSearch(): void {
         this.pagination.page = 0;
         this.pagination.length = 0;
+        this.pagination.tenant_id = undefined;
         this.pagination.zitadel_user_id = undefined;
         this.pagination.device_user_id = undefined;
         this.pagination.device_id = undefined;
@@ -145,6 +142,7 @@ export class DeviceLogsComponent implements OnInit, OnDestroy {
             .navigate(['.'], {
                 relativeTo: this._activatedRoute,
                 queryParams: {
+                    tenant_id: this.pagination.tenant_id,
                     zitadel_user_id: this.pagination.zitadel_user_id,
                     device_id: this.pagination.device_id,
                     device_user_id: this.pagination.device_user_id,

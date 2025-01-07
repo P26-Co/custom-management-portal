@@ -15,7 +15,7 @@
                 <!-- Actions -->
                 <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
                     <!-- Clear Filter -->
-                    @if (pagination.zitadel_user_id || pagination.device_user_id || pagination.device_id) {
+                    @if (pagination.tenant_id || pagination.zitadel_user_id || pagination.device_user_id || pagination.device_id) {
                         <button [color]="'primary'" mat-stroked-button (click)="clearSearch()">
                             <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
                             <span>Clear Filter</span>
@@ -91,7 +91,7 @@
                     <ng-container matColumnDef="timestamp">
                         <th mat-header-cell *matHeaderCellDef> Timestamp</th>
                         <td mat-cell *matCellDef="let element">
-                            {{ (element.timestamp | date) || '-' }}
+                            {{ (element.timestamp | date: 'medium') || '-' }}
                         </td>
                     </ng-container>
 

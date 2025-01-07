@@ -12,6 +12,34 @@
                         </div>
                     </div>
                 </div>
+                <!-- Actions -->
+                <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                    <!-- Import ZitadelUsers -->
+                    @if (user?.role === userRole.ADMIN) {
+                        <button mat-flat-button (click)="viewTaskStatus()">
+                            <span>View Task History</span>
+                        </button>
+
+                        <button [color]="'primary'" mat-flat-button [disabled]="isImportLoading" (click)="importZitadelUser()">
+                            @if (isImportLoading) {
+                                <mat-progress-spinner
+                                    [diameter]="24"
+                                    [mode]="'indeterminate'"
+                                ></mat-progress-spinner>
+                            } @else {
+                                <span>Import Zitadel Users</span>
+                            }
+                        </button>
+                    }
+
+                    <!-- Clear Filter -->
+                    @if (pagination.tenant_id) {
+                        <button [color]="'primary'" mat-stroked-button (click)="clearSearch()">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+                            <span>Clear Filter</span>
+                        </button>
+                    }
+                </div>
             </div>
 
             <!-- Alert -->
@@ -57,8 +85,8 @@
 
                     <!-- tenant_id Column -->
                     <ng-container matColumnDef="tenant_id">
-                        <th mat-header-cell *matHeaderCellDef> Tenant Id</th>
-                        <td mat-cell *matCellDef="let element">{{ element.tenant_id || '-' }}</td>
+                        <th mat-header-cell *matHeaderCellDef> Tenant</th>
+                        <td mat-cell *matCellDef="let element">{{ element.tenant.name || '-' }}</td>
                     </ng-container>
 
                     <!-- Action Column -->
@@ -66,12 +94,20 @@
                         <th mat-header-cell *matHeaderCellDef> Action</th>
                         <td mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="view devices" (click)="viewDevice(element.id)">
-                                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:computer-desktop'"></mat-icon>
+                                <mat-icon class="icon-size-5"
+                                          [svgIcon]="'heroicons_outline:computer-desktop'"></mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="view device users" (click)="viewDeviceUser(element.id)">
+                                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:devices'"></mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="view shared users" (click)="viewSharedUser(element.id)">
+                                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:screen_share'"></mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="view device logs" (click)="viewDeviceLogs(element.id)">
-                                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:screen_search_desktop'"></mat-icon>
+                                <mat-icon class="icon-size-5"
+                                          [svgIcon]="'mat_outline:screen_search_desktop'"></mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="view admin logs" (click)="viewAdminLogs(element.id)">
+                            <button mat-icon-button matTooltip="view portal logs" (click)="viewAdminLogs(element.id)">
                                 <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:manage_search'"></mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="delete" (click)="deleteConfirmation(element)">

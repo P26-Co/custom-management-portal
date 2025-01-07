@@ -10,6 +10,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:home',
         children: [
             {
+                id: 'main.zitadel_tenants',
+                title: 'Zitadel Tenants',
+                type: 'basic',
+                icon: 'heroicons_outline:building-office-2',
+                link: RoutesConstants.ZITADEL_TENANTS,
+            },
+            {
                 id: 'main.zitadel_users',
                 title: 'Zitadel Users',
                 type: 'basic',
@@ -56,11 +63,25 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: RoutesConstants.ADMIN_USERS,
             },
             {
+                id: 'main.tenant_managers',
+                title: 'Tenant Mangers',
+                type: 'basic',
+                icon: 'mat_outline:supervised_user_circle',
+                link: RoutesConstants.TENANT_MANAGERS,
+            },
+            {
+                id: 'main.task_status',
+                title: 'Task Status',
+                type: 'basic',
+                icon: 'heroicons_outline:server-stack',
+                link: RoutesConstants.TASK_STATUS,
+            },
+            {
                 id: 'main.admin_logs',
-                title: 'Admin Logs',
+                title: 'Portal Logs',
                 type: 'basic',
                 icon: 'mat_outline:manage_search',
-                link: RoutesConstants.ADMIN_LOGS,
+                link: RoutesConstants.PORTAL_LOGS,
             },
         ],
     },

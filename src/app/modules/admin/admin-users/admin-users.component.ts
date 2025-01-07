@@ -20,7 +20,7 @@ import {
 } from '../../../../@fuse/components/alert';
 import { FuseConfirmationService } from '../../../../@fuse/services/confirmation';
 import { UserService } from '../../../core/user/user.service';
-import { User } from '../../../core/user/user.types';
+import { ROLE, User } from '../../../core/user/user.types';
 import { PAGE_SIZES } from '../../shared/constants/others.constants';
 import { RoutesConstants } from '../../shared/constants/routes.constants';
 import { Pagination } from '../../shared/types/pagination.types';
@@ -53,7 +53,7 @@ import { AdminUserModel, AdminUsersModel } from './admin-users.type';
 export class AdminUsersComponent implements OnInit, OnDestroy {
     private _subscription: Subscription = new Subscription();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    displayedColumns: string[] = ['name', 'email', 'action'];
+    displayedColumns: string[] = ['name', 'email', 'role', 'action'];
 
     pageSize: number[] = PAGE_SIZES;
     adminUsers: AdminUserModel[];
@@ -63,6 +63,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         length: 0,
         page: 0,
         size: this.pageSize[0],
+        role: ROLE.ADMIN
     };
 
     alert: {
@@ -219,10 +220,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         );
     }
 
-    viewAdminLogs(id: number): void {
+    viewAdminLogs(id: string): void {
         this.router
-            .navigate([RoutesConstants.ADMIN_LOGS], {
-                queryParams: { admin_user_id: id },
+            .navigate([RoutesConstants.PORTAL_LOGS], {
+                queryParams: { portal_user_id: id },
             })
             .then();
     }

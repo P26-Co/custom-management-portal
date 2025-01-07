@@ -7,7 +7,7 @@ export class DeviceUsersModel extends PageableModel {
 }
 
 export class DeviceUserModel {
-    id?: number;
+    id?: string;
     device_username?: string;
     device?: DeviceModel;
     user?: ZitadelUserModel;

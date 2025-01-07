@@ -13,23 +13,23 @@ export class AdminUsersService {
     constructor(private _httpClient: HttpClient) {}
 
     getAdminUsers(pagination: Pagination): Observable<AdminUsersModel> {
-        return this._httpClient.get<AdminUsersModel>(APIs.ADMIN_USERS, {
+        return this._httpClient.get<AdminUsersModel>(APIs.PORTAL_USERS, {
             params: createHttpParams(pagination),
         });
     }
 
     createAdminUser(data: AdminUserModel): Observable<AdminUserModel> {
-        return this._httpClient.post<AdminUserModel>(APIs.ADMIN_USERS, data);
+        return this._httpClient.post<AdminUserModel>(APIs.PORTAL_USERS, data);
     }
 
-    updateAdminUser(id: number, data: AdminUserModel): Observable<AdminUserModel> {
+    updateAdminUser(id: string, data: AdminUserModel): Observable<AdminUserModel> {
         return this._httpClient.patch<AdminUserModel>(
-            `${APIs.ADMIN_USERS}/${id}`,
+            `${APIs.PORTAL_USERS}${id}`,
             data
         );
     }
 
-    deleteAdminUser(id: number): Observable<any> {
-        return this._httpClient.delete<any>(`${APIs.ADMIN_USERS}/${id}`);
+    deleteAdminUser(id: string): Observable<any> {
+        return this._httpClient.delete<any>(`${APIs.PORTAL_USERS}${id}`);
     }
 }

@@ -14,8 +14,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.types';
+import { ROLE, User } from 'app/core/user/user.types';
 import { Subject, takeUntil } from 'rxjs';
+import {
+    FuseNavigationService,
+    FuseVerticalNavigationComponent,
+} from '../../../../@fuse/components/navigation';
 
 @Component({
     selector: 'user',
@@ -24,12 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
     exportAs: 'user',
     standalone: true,
-    imports: [
-        MatButtonModule,
-        MatMenuModule,
-        MatIconModule,
-        MatDividerModule,
-    ],
+    imports: [MatButtonModule, MatMenuModule, MatIconModule, MatDividerModule],
 })
 export class UserComponent implements OnInit, OnDestroy {
     /* eslint-disable @typescript-eslint/naming-convention */
@@ -46,6 +45,7 @@ export class UserComponent implements OnInit, OnDestroy {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
+        private _fuseNavigationService: FuseNavigationService,
         private _router: Router,
         private _userService: UserService
     ) {}
@@ -64,6 +64,43 @@ export class UserComponent implements OnInit, OnDestroy {
             .subscribe((user: User) => {
                 this.user = user;
 
+                if (user.role === ROLE.TENANT_MANAGER) {
+                    const navComponent =
+                        this._fuseNavigationService.getComponent<FuseVerticalNavigationComponent>(
+                            'mainNavigation'
+                        );
+                    if (!navComponent) {
+                        return null;
+                    }
+                    const navigation = navComponent.navigation;
+
+                    const zitadel_tenants = this._fuseNavigationService.getItem(
+                        'main.zitadel_tenants',
+                        navigation
+                    );
+                    zitadel_tenants.hidden = () => true;
+
+                    const admin_users = this._fuseNavigationService.getItem(
+                        'main.admin_users',
+                        navigation
+                    );
+                    admin_users.hidden = () => true;
+
+                    const tenant_managers = this._fuseNavigationService.getItem(
+                        'main.tenant_managers',
+                        navigation
+                    );
+                    tenant_managers.hidden = () => true;
+
+                    const task_status = this._fuseNavigationService.getItem(
+                        'main.task_status',
+                        navigation
+                    );
+                    task_status.hidden = () => true;
+
+                    navComponent.refresh();
+                }
+
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -81,7 +118,6 @@ export class UserComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
 
     /**
      * Sign out
